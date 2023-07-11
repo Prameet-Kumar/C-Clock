@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Time</title>
+    <link rel="icon" type="image/x-icon" href="images/qwe-removebg-preview.png">
+    <style>
+
+      body{
+          background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      	background-size: 400% 400%;
+      	animation: gradient 8s ease infinite;
+      	height: 100vh;
+      }
+      #time{
+          text-align: center;
+          font-size: 40px;
+          border-radius: 10%;
+          border:solid;
+          width: auto;
+          margin:3% 40%;
+      }
+      .can{
+          margin: 5% 5%;
+          text-align: center;
+
+      }
+      #clock{
+          width: 500px;
+          height: 500px;
+      }
+      @keyframes gradient {
+      	0% {
+      		background-position: 0% 50%;
+      	}
+      	50% {
+      		background-position: 100% 50%;
+      	}
+      	100% {
+      		background-position: 0% 50%;
+      	}
+      }
+      @media only screen and (max-width: 700px) {
+          #time{
+          text-align: center;
+          font-size: 25px;
+          border-radius: 10%;
+          border:solid;
+          /* width: auto; */
+          /* margin:3% 40%; */
+          width: 50%;
+          margin-left: 25%;
+          margin-right: 25%;
+      }
+      #clock{
+          width: 300px;
+          height: 300px;
+      }
+    }
+    </style>
+  </head>
+  <body text="black">
+    <div class="can">
+      <canvas id="clock" width="500" height="500">
+        Please upgrade your browser!!!
+      </canvas>
+      <div id="time"></div>
+    </div>
+    <script>
+      function setTime() {
+        var canvas = document.getElementById("clock");
+        var context = canvas.getContext("2d");
+        var clockRadius = canvas.width / 2;
+
+        context.beginPath();
+        context.fillStyle = "black";
+        context.arc(clockRadius, clockRadius, clockRadius, 0, 2 * Math.PI);
+        context.fill();
+        context.fillStyle = "white";
+        context.beginPath();
+        context.arc(clockRadius, clockRadius, 10, 0, 2 * Math.PI);
+        context.fill();
+
+        //   context.fillStyle="white";
+        //   context.beginPath();
+        //   context.arc(clockRadius, clockRadius,clockRadius, 0, 2 * Math.PI);
+
+        context.font = clockRadius / 10 + "px arial";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        for (var i = 1; i <= 12; i++) {
+          context.fillText(
+            i,
+            clockRadius + clockRadius * 0.9 * Math.sin((i * 2 * Math.PI) / 12),
+            clockRadius - clockRadius * 0.9 * Math.cos((i * 2 * Math.PI) / 12)
+          );
+        }
+        var hours = new Date().getHours();
+        var minutes = new Date().getMinutes();
+        var seconds = new Date().getSeconds();
+        var fullHours = (hours % 12) + minutes / 60 + seconds / 3600;
+
+        var hAngle = (fullHours * 2 * Math.PI) / 12;
+        var mAngle = (minutes * 2 * Math.PI) / 60;
+        var sAngle = (seconds * 2 * Math.PI) / 60;
+
+        context.strokeStyle = "white";
+        context.moveTo(clockRadius, clockRadius);
+        context.lineTo(
+          clockRadius + clockRadius * 0.47 * Math.sin(hAngle),
+          clockRadius - clockRadius * 0.47 * Math.cos(hAngle)
+        );
+        context.lineWidth = 5;
+        context.stroke();
+        context.moveTo(clockRadius, clockRadius);
+        context.lineTo(
+          clockRadius + clockRadius * 0.65 * Math.sin(mAngle),
+          clockRadius - clockRadius * 0.65 * Math.cos(mAngle)
+        );
+        context.lineWidth = 3;
+        context.stroke();
+        context.moveTo(clockRadius, clockRadius);
+        context.lineTo(
+          clockRadius + clockRadius * 0.8 * Math.sin(sAngle),
+          clockRadius - clockRadius * 0.8 * Math.cos(sAngle)
+        );
+        context.lineWidth = 2;
+        context.stroke();
+        
+        if (hours >= 12) {
+          document.getElementById("time").innerHTML =
+            (hours % 12) + ":" + minutes + ":" + seconds + " pm.";
+        } else {
+          document.getElementById("time").innerHTML =
+            (hours % 12) + ":" + minutes + ":" + seconds + " am.";
+        }
+      }
+      setInterval(setTime, 1000);
+    </script>
+  </body>
+</html>
